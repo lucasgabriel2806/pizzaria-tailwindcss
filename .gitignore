@@ -1,0 +1,38 @@
+# Ignora a pasta de dependências
+node_modules/
+
+# Ignora arquivos de  configuração
+package-lock.json
+package.json
+tailwind.config.js
+
+# Ignora os arquivos de build/compilação
+dist/
+build/
+
+# Ignora arquivos temporários
+*.log
+*.tmp
+
+# Cache do sistema / ferramentas
+.cache/
+.vite/
+.pnpm-debug.log
+
+# Diretórios do sistema operacional
+.DS_Store
+Thumbs.db
+
+# IDEs e editores
+.vscode/
+.idea/
+
+# Arquivos de ambiente (ex: variáveis secretas)
+.env
+.env.*
+
+# Arquivos de lock (caso não queira versionar)
+# Descomente se não quiser versionar o arquivo de lock
+# package-lock.json
+# yarn.lock
+
