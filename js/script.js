@@ -6,13 +6,15 @@ const cartItemsContainer = document.getElementById("cart-items");
 const cartTotal = document.getElementById("cart-total");
 const checkoutBtn = document.getElementById("checkout-btn");
 const closeModalBtn = document.getElementById("close-modal-btn");
-const cartCounter = document.getElementById("cart-count");const addressInput = document.getElementById("address");
+const cartCounter = document.getElementById("cart-count");
+const addressInput = document.getElementById("address");
 const addressWarn = document.getElementById("address-warn");
 
 let cart = [];
 
 // Abrir o modal do carrinho
 cartBtn.addEventListener("click", function() {
+    updateCartModal();
     cartModal.style.display = "flex";
 });
 
@@ -72,5 +74,34 @@ function updateCartModal(){
 
     cart.forEach(item => {
       // console.log(item);
-    })
+      const cartItemElement = document.createElement("div");
+      cartItemElement.classList.add("flex", "justify-between", "mb-4", "flex-col");
+
+      cartItemElement.innerHTML = `
+        <div class="flex items-center justify-between">
+           <div>
+             <p class="font-medium">${item.name}</p>
+             <p>Qtd: ${item.quantity}</p>
+             <p class="font-medium mt-2">R$ ${item.price.toFixed(2)}</p>
+           </div>
+
+           <button>
+             Remover
+           </button>
+        </div>
+      `;
+
+      total += item.price * item.quantity; 
+
+      cartItemsContainer.appendChild(cartItemElement);
+        
+    });
+
+    cartTotal.textContent = total.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+
+    cartCounter.innerHTML = cart.length;
+    
 }
