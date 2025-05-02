@@ -31,13 +31,13 @@ closeModalBtn.addEventListener("click", function() {
 });
 
 menu.addEventListener("click", function(event) {
-    // console.log(event.target);
+    console.log(event.target);
     let parentButton = event.target.closest(".add-to-cart-btn");
 
     // console.log(parentButton);
     if(parentButton) {
         const name = parentButton.getAttribute("data-name");
-        const price = pasreFloat(parentButton.getAttribute("data-price"));
+        const price = parseFloat(parentButton.getAttribute("data-price"));
 
         // console.log(name, price);
 
@@ -116,8 +116,8 @@ cartItemsContainer.addEventListener("click", function(event) {
    } 
 });
 
-funnction removeItemCart(name) {
-    const index = cart.findIndex(item => item.name === name))
+function removeItemCart(name) {
+    const index = cart.findIndex(item => item.name === name);
 
     if(index !== -1) {
         const item = cart[index];
@@ -147,8 +147,21 @@ addressInput.addEventListener("input", function(event){
 checkoutBtn.addEventListener("click", function(){
 
     const isOpen = checkRestaurantOpen();
-    if(isOpen){
+    if(!isOpen){
+
+        Toastify({
+            text: "O restaurante está fechado!",
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "#ef4444",
+            },
+          }).showToast();
         
+        return;        
     }
     
     if(cart.length === 0) return;
@@ -157,6 +170,21 @@ checkoutBtn.addEventListener("click", function(){
         addressInput.classList.add("border-red-500");
         return;
     }
+
+    // Enviar o pedido para api do whatsapp
+    const cartItems = cart.map((item) => {
+        return (
+            `${item.name} Quantidade: (${item.quantity}) Preço: R$${item.price} | `
+        )
+    }).join("");
+
+    const message = encodeURIComponent(cartItems);
+    const phone = "14991776338";
+
+    window.open(`https://wa.me/${phone}?text=${message} Endereço: ${addressInput.value}`, "_blank");
+
+    cart = [];
+    updateCartModal();
 });
 
 // Verificar a hora e manipular o card horário
